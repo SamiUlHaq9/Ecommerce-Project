@@ -1,0 +1,115 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LayoutSite.cshtml";
+}
+
+
+<script>
+    $(document).ready(function () {
+        ReadId();
+        /*tinymce.init({ selector: '#textArea' });*/
+    });
+    function Insert() {
+        /*var Id = GetURLParameter('id');*/
+        var MobileNo = $('#PhoneNumber').val();
+        var Password = $('#Password').val();
+        $.ajax({
+            url: "/Api/CustomerRegistration/InsertUser",
+            type: "POST",
+            data: JSON.stringify({
+                /*"Id": Id,*/
+                "MobileNo": MobileNo,
+                "Password": Password,
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (msg) {
+            }
+        });
+    }
+    function ReadId() {
+        var Id = GetURLParameter('id');
+        if (Id == null) {
+
+        }
+        else {
+            $.ajax({
+                url: "/api/ItemSetup/ReadById?id=" + Id,
+                type: "Post",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    data = JSON.parse(data);
+                    $("#Id").val();
+                    $("#Title").val(data[0]['Title']);
+                    $("#Description").val(data[0]['Description']);
+                    $("#ItemType").val(data[0]['ProductType']);
+                    $("#Status").val(data[0]['Status']).change();
+                    $("#Brand").val(data[0]['Brand']).change();
+                    $("#Quantity").val(data[0]['Quantity']);
+                    $("#Weight").val(data[0]['Weight']);
+                    $("#MaxOrderQuantity").val(data[0]['MaxOrderQuantity']);
+                    $("#Price").val(data[0]['Price']);
+                    $("#CompareAtPrice").val(data[0]['CompareAtPrice']);
+                    $("#Category").val(data[0]['Category']).change();
+                    $.ajax({
+                        url: "/api/ItemSetup/GetSubCategory",
+                        type: 'Post',
+                        data: JSON.stringify({
+                            Id: data[0]['Category']
+                        }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data1) {
+                            data1 = JSON.parse(data1);
+                            $('#SubCategory').html('')
+                            $("#SubCategory").append('<option value="0">--Select Category--</option>')
+                            for (var i = 0; i < data1.length; i++) {
+                                var html = '<option value="' + data1[i]['Id'] + '">' + data1[i]['SubCategory_Name'] + '</option>';
+                                $('#SubCategory').append(html);
+                            }
+                            $("#SubCategory").val(data[0]['SubCategory']).change();
+                        },
+                    })
+                    $("#SKU").val(data[0]['SKU']);
+                    $("#Barcode").val(data[0]['Barcode']);
+                    $('#flexCheckDefault').prop("checked", (data[0].IsActive == "True" ? true : false));
+                    $('#flexCheckDefault').val(data[0].IsActive);
+                },
+            });
+        }
+    }
+</script>
+
+
+<main>
+    <div class="container mb-5">
+        <form id="myform">
+            <div class="container-fluid my-5 d-flex justify-content-between align-items-center"><h3>Welcome to Daraz! Please login.</h3> <small>New member? <a href=@Url.Action("CustomerRegistration", "Site")>Register</a>here.</small></div>
+            <div class="row bg-white p-4 ">
+                <div class="col-12 col-lg-6 mt-4 mb-3">
+                    <div class="mb-3">
+                        <label for="PhoneNumber" class="form-label">Phone Number*</label>
+                        <input type="text" class="form-control contact" id="PhoneNumber" placeholder="PhoneNumber">
+                    </div>
+                    <div class="mb-4">
+                        <label for="Password" class="form-label">Password*</label>
+                        <input type="password" class="form-control contact" id="Password" placeholder="Password">
+                    </div>
+                    <small><a href=@Url.Action("CustomerRegistration", "Site")>Forget Password?</a></small>
+                </div>
+                <div class="col-12 col-lg-6 mt-4 mb-3">
+                    <div class="mb-3">
+                        <button type="button" class="more-btn w-100" onclick="Insert()">Login</button>
+                    </div>
+                    @*<div class="mb-4">
+                        <small class="mb-1">Or, Login with</small>
+                    </div>*@
+                    <div class="row">
+                        <small class="mb-1">Or, Login with</small>
+                        <div class="col-6 "><button class="d-flex align-items-center submit w-100"><ion-icon name="logo-facebook"></ion-icon> <p class="mb-0 ms-3"> Facebook</p></button></div>
+                        <div class="col-6 "><button class="d-flex align-items-center submit w-100"><ion-icon name="logo-google"></ion-icon> <p class="mb-0 ms-3"> Google</p></button></div>
+                        <div class="col-6"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>

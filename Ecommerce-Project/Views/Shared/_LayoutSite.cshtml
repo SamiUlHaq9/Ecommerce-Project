@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Home || index</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/Site/sitestyle.css">
+    <!-- Sweet Alert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+
+    <!-- nav start -->
+
+    <nav>
+
+        <div class=" container nav-container header-child">
+
+
+
+            <input type="checkbox" id="bar">
+
+            <label for="bar" class="barlines">
+                <div class=" barlines" onclick="change(this)">
+                    <div class="bar-line line-1"></div>
+                    <div class="bar-line line-2"></div>
+                    <div class="bar-line line-3"></div>
+                </div>
+            </label>
+
+            <a href="./index.html" class=""><h5>Anas-Shop</h5></a>
+
+
+            <ul>
+                <li><a href="@Url.Action("CustomerRegistration", "Site")">Home</a></li>
+                <li><a href="@Url.Action("CustomerRegistration", "Site")">About Us</a></li>
+                <li><a href="@Url.Action("CustomerRegistration", "Site")">Product</a></li>
+                <li><a href="@Url.Action("CustomerRegistration", "Site")">Blog</a></li>
+                <li><a href="@Url.Action("CustomerRegistration", "Site")">Contact Us</a></li>
+            </ul>
+
+            <div class="d-flex justify-content-between ">
+                <ion-icon name="search" class="me-2" data-tip="Search"></ion-icon>
+                <ion-icon name="cart" class="me-1" data-tip="Cart"></ion-icon>
+                <a href="@Url.Action("CustomerRegistration", "Site")"><ion-icon name="person-outline" class="me-1" data-tip="User"></ion-icon></a>
+            </div>
+
+
+        </div>
+
+    </nav>
+    <!-- nav end -->
+
+    @RenderBody();
+
+    <!-- main-content end  -->
+    <!-- footer start -->
+
+    <footer class="footer-bg ">
+        <div class="container ">
+            <div class="row p-3 p-md-0 pt-3">
+                <div class="col-12 col-md-6 col-lg-3">
+
+                    <!-- <img src="./img/download-removebg-preview.png" class="footer-logo" alt="LOGO"> -->
+
+                    <h4 class="footer-hadings mb-5">Anas-shop</h4>
+                    <p class=" p-witdh">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatum ex veritatis ipsam! Eaque odit .</p>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 p-1">
+                    <h4 class="footer-hadings mb-5">Get In Touch</h4>
+                    <div class="d-flex mb-2 scale-contact"><ion-icon name="mail" class="footer-icons"></ion-icon> <p class="m-0 mb-1">Anasjahangir.bus@gmail.com</p></div>
+                    <div class="d-flex mb-1 scale-contact"><ion-icon name="call" class="footer-icons"></ion-icon> <p class="m-0 mb-1">12345678</p></div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <h4 class="footer-hadings mb-5">Follow Us</h4>
+                    <div class="d-flex ">
+                        <a href="#"><ion-icon name="logo-facebook" class="footer-socail"></ion-icon></a>
+                        <a href="#"><ion-icon name="logo-instagram" class="footer-socail"></ion-icon></a>
+                        <a href="#"><ion-icon name="logo-twitter" class="footer-socail"></ion-icon></a>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <h4 class="footer-hadings mb-5">Subscribe Newsletter</h4>
+                    <div>
+                        <p>Your Email</p>
+
+                        <input type="email" placeholder="Email" class="footer-email">
+
+                        <div><input type="submit" value="Subscribe" class="submit scale-contact"> </div>
+
+                    </div>
+                </div>
+                <div class=" col-12"><p class="fs16 font-poppins fw-500 color-black mb-3 mt-3">© Copyright 2012 - 2022 | All Right Reserved ( Anasjahangir )</p></div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- footer end -->
+
+
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script>
+        function change(bar) {
+            bar.classList.toggle("change")
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+﻿@{
+    ViewData["Title"] = "UserPayment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    img {
+        width: 50px;
+    }
+
+    label {
+        font-weight: 500 !important;
+        font-size: 16px;
+    }
+</style>
+
+
+<div class="heading">
+    <h2 class="heading-title m-0">User Payment</h2>
+</div>
+
+
+<section class="px-1 p-md-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-5">
+            <div class="card" style="border-radius: 20px;">
+                <div class="card-body ">
+
+
+                    <div class="col py-1 py-md-2 text-center">
+                        <span class="h4">Accepted Card</span>
+
+                    </div>
+                    <div class="col py-1 py-md-2 text-center">
+
+                        <img src="~/Icon Image/discover.png" />
+                        <img src="~/Icon Image/paypal.png" />
+                        <img src="~/Icon Image/visa.png" />
+
+                    </div>
+
+
+
+                    <div class="col py-1 py-md-2">
+                        <div class="input-group  ">
+                            <select class="form-select col-12 py-2" id="inputGroupSelect01">
+                                <option selected>Select Card</option>
+                                <option value="1">Master Card </option>
+                                <option value="2">Paypal</option>
+                                <option value="3">Discover </option>
+                                <option value="4">Credit Card </option>
+                                <option Vaiue="5">Visa card</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col py-1 py-md-2">
+                        <label for="inputEmail4" class="form-label">Provider</label>
+                        <input type="text" class="form-control" placeholder=" " aria-label="First name">
+                    </div>
+
+                    <div class="col py-1 py-md-2">
+                        <label for="inputEmail4" class="form-label">Card Number</label>
+                        <input type="text" class="form-control" placeholder="" aria-label="Last name">
+                    </div>
+
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-lg-8 py-1 py-md-2">
+                                <label for="inputEmail4" class="form-label">Expiry</label>
+                                <input type="text" class="form-control" placeholder="MM/YY">
+                            </div>
+                            <div class="col-lg-4 py-1 py-md-2">
+                                <label for="inputEmail4" class="form-label">CVV</label>
+                                <input type="text" class="form-control" placeholder=" CVV"
+                                       aria-label="Last name">
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="text-right col py-1 py-md-2">
+                        <button type="button" class="btn submit-btn">Submit</button>
+
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

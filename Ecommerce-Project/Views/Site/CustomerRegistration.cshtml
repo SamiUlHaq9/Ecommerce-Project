@@ -1,0 +1,213 @@
+﻿@{
+    ViewData["Title"] = "CustomerRegistration";
+    Layout = "~/Views/Shared/_LayoutSite.cshtml";
+}
+
+
+<script>
+    $(document).ready(function () {
+        ReadId();
+        /*tinymce.init({ selector: '#textArea' });*/
+        $("#flexCheckDefault").val('False');
+        CheckStatus("flexCheckDefault");
+    });
+    function CheckStatus(e) {
+        $('#' + e).on('change', function (e) {
+            e.stopPropagation();
+            this.value = this.checked ? true : false;
+        });
+    }
+    function Insert() {
+        /*var Id = GetURLParameter('id');*/
+        var FirstName = $('#FirstName').val();
+        var LastName = $('#LastName').val();
+        var MobileNo = $('#PhoneNumber').val();
+        var DOB = $('#DOB').val();
+        var Password = $('#Password').val();
+        var Gender = $('#Gender').val();
+        $.ajax({
+            url: "/Api/CustomerRegistration/InsertUser",
+            type: "POST",
+            data: JSON.stringify({
+                /*"Id": Id,*/
+                "FirstName": FirstName,
+                "LastName": LastName,
+                "MobileNo": MobileNo,
+                "DOB": DOB,
+                "Password": Password,
+                "Gender": Gender,
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (msg) {
+                if (msg == 1) {
+                    swal({
+                        title: "Success!",
+                        text: "You SignUp Successfully.",
+                        icon: "success",
+                        button: "OK",
+                    });
+                    $('form').find('input').val("");
+                    $('form').find('textarea').val("");
+                    $('#flexCheckDefault').prop('checked', false);
+                    window.location.href = '/Site/Login';
+                }
+                else if (msg == 2) {
+                    swal({
+                        title: "Error!",
+                        text: "Internal Server Error Status : 500",
+                        icon: "error",
+                        button: "OK",
+                    });
+                }
+                else {
+                    swal({
+                        title: "Error!",
+                        text: "Unexpected Error",
+                        icon: "error",
+                        button: "OK",
+                    });
+                }
+            }
+        });
+    }
+    function ReadId() {
+        var Id = GetURLParameter('id');
+        if (Id == null) {
+
+        }
+        else {
+            $.ajax({
+                url: "/api/ItemSetup/ReadById?id=" + Id,
+                type: "Post",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    data = JSON.parse(data);
+                    $("#Id").val();
+                    $("#Title").val(data[0]['Title']);
+                    $("#Description").val(data[0]['Description']);
+                    $("#ItemType").val(data[0]['ProductType']);
+                    $("#Status").val(data[0]['Status']).change();
+                    $("#Brand").val(data[0]['Brand']).change();
+                    $("#Quantity").val(data[0]['Quantity']);
+                    $("#Weight").val(data[0]['Weight']);
+                    $("#MaxOrderQuantity").val(data[0]['MaxOrderQuantity']);
+                    $("#Price").val(data[0]['Price']);
+                    $("#CompareAtPrice").val(data[0]['CompareAtPrice']);
+                    $("#Category").val(data[0]['Category']).change();
+                    $.ajax({
+                        url: "/api/ItemSetup/GetSubCategory",
+                        type: 'Post',
+                        data: JSON.stringify({
+                            Id: data[0]['Category']
+                        }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data1) {
+                            data1 = JSON.parse(data1);
+                            $('#SubCategory').html('')
+                            $("#SubCategory").append('<option value="0">--Select Category--</option>')
+                            for (var i = 0; i < data1.length; i++) {
+                                var html = '<option value="' + data1[i]['Id'] + '">' + data1[i]['SubCategory_Name'] + '</option>';
+                                $('#SubCategory').append(html);
+                            }
+                            $("#SubCategory").val(data[0]['SubCategory']).change();
+                        },
+                    })
+                    $("#SKU").val(data[0]['SKU']);
+                    $("#Barcode").val(data[0]['Barcode']);
+                    $('#flexCheckDefault').prop("checked", (data[0].IsActive == "True" ? true : false));
+                    $('#flexCheckDefault').val(data[0].IsActive);
+                },
+            });
+        }
+    }
+
+</script>
+
+<style>
+  
+</style>
+
+
+<main>
+    <div class="container mb-5">
+        <form id="myform">
+        <div class="container-fluid my-5 d-flex justify-content-between align-items-center"><h3>Create your Daraz Account</h3> <small>Already member? <a href=@Url.Action("Login", "Site")>Login</a>here.</small></div>
+
+        <div class="row bg-white p-4 ">
+            <div class="col-12 col-lg-6 mt-4 mb-3">
+                <div class="mb-3">
+                    <label for="PhoneNumber" class="form-label">Phone Number*</label>
+                    <input type="text" class="form-control contact" id="PhoneNumber" placeholder="PhoneNumber">
+                </div>
+
+                <div class="mb-4 p-1">
+                    <button class="submit w-100 text-capitalize" type="button">send message</button>
+                </div>
+
+                <div class="mb-4">
+                    <label for="Password" class="form-label">Password*</label>
+                    <input type="password" class="form-control contact" id="Password" placeholder="Password">
+                </div>
+
+                <div class="row mb-3">
+
+                    <div class="col-6">
+                        <label for="Birthday" class="mb-1">Birthday</label>
+                        <input type="date" class="form-control contact" id="DOB">
+                    </div>
+
+                    <div class="col-6">
+                        <label for="Gender" class="mb-1">Gender</label>
+                        <select class="form-select contact" aria-label="Default select example" id="Gender">
+                            <option selected>Select Gender</option>
+                            <option value="0">Male</option>
+                            <option value="1">Female</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-12 col-lg-6 mt-4 mb-3">
+                <div class="mb-3">
+                    <label for="Fullname" class="form-label">First Name*</label>
+                    <input type="text" class="form-control contact" id="FirstName" placeholder="Full name">
+                </div>
+
+                <div class="mb-3">
+                    <label for="Fullname" class="form-label">Last Name*</label>
+                    <input type="text" class="form-control contact" id="LastName" placeholder="Full name">
+                </div>
+
+                <div class="form-check mb-4">
+                    <input class="form-check-input contact" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        <small>
+                            I'd like to receive exclusive offers and promotions via SMS
+                        </small>
+                    </label>
+                </div>
+
+                <div class="mb-3">
+                    <button type="button" class="more-btn w-100" onclick="Insert()">Sign Up</button>
+                </div>
+
+                <div class="mb-4">
+                    <small>By clicking “SIGN UP”, I agree to Daraz's Terms of Use and Privacy Policy</small>
+                </div>
+
+                <div class="mb-4">
+                    <small class="mb-1">Or, sign up with</small>
+                    <button class="btn-blue-out w-100">Sign up with Email</button>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 "><button class="d-flex align-items-center submit w-100"><ion-icon name="logo-facebook"></ion-icon> <p class="mb-0 ms-3"> Facebook</p></button></div>
+                    <div class="col-6 "><button class="d-flex align-items-center submit w-100"><ion-icon name="logo-google"></ion-icon> <p class="mb-0 ms-3"> Google</p></button></div>
+                    <div class="col-6"></div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+    </div>
+</main>

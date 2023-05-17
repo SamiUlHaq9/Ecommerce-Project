@@ -1,0 +1,180 @@
+﻿h1, h2, h3, h4, h5, h6, p, span, label, div, table, tr, th, td {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+    color: #0366d6;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
+}
+
+input[type=text] { /* Inventory Input Box Css*/
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+}
+
+    input[type=text]:focus { /* Inventory Input Box Css*/
+        border: 3px solid #555;
+    }
+
+
+.heading {
+    display:flex;
+    justify-content:space-between;
+    margin: 7px 10px;
+    background-color: #343a40;
+    padding: 10px;
+    border-radius: 8px;
+    position: relative;
+}
+.heading .select2-container {
+    width: 18% !important;
+}
+.heading-title {
+    font-family: 'Poppins';
+    font-weight: 400;
+    color: white;
+    font-size: 30px;
+}
+
+.comman-btn {
+    background-color: white !important;
+    font-family: 'Poppins';
+    font-size: 16px;
+    transition: .5s ease all;
+}
+
+.comman-btn2 {
+    background-color: black !important;
+    font-family: 'Poppins';
+    font-size: 16px;
+    transition: .5s ease all;
+    color: white;
+}
+
+.comman-btn:hover {
+    background-color: #7f7f7f;
+    color: white;
+}
+
+.submit-btn {
+    background-color: #343a40 !important;
+    font-family: 'Poppins';
+    font-size: 16px;
+    transition: .5s ease all;
+    color: white !important;
+}
+
+button.btn-edit {
+    border: unset;
+    color: blue;
+    margin: 0 10px;
+    background: transparent;
+}
+
+button.btn-delete {
+    border: unset;
+    margin: 0 10px;
+    color: red;
+    background: transparent;
+}
+.comman-btn2 {
+    background-color: #343a40 !important;
+    font-family: 'Poppins';
+    font-size: 16px;
+    transition: .5s ease all;
+    color: white !important;
+}
+
+textarea.select2-search__field {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 10px !IMPORTANT;
+    margin-top: 0 !important;
+    border: none !important;
+}
+
+ul#select2-states-5s-container {
+    padding: 0;
+}
+table.dataTable tbody th, table.dataTable tbody td {
+    font-size: 15px !important;
+    font-weight: 500 !important;
+}
+.select2-results__options li {
+    font-size: 14px !important;
+}
+span#select2-Category-container {
+    font-size: 14px !important;
+}
+

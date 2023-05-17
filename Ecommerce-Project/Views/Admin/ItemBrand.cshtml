@@ -1,0 +1,179 @@
+﻿@{
+    ViewData["Title"] = "ItemBrand";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script>
+    $(document).ready(function () {
+        $("#flexCheckDefault").val('False');
+        CheckStatus("flexCheckDefault");
+        getDetails();
+    });
+    function CheckStatus(e) {
+        $('#' + e).on('change', function (e) {
+            e.stopPropagation();
+            this.value = this.checked ? true : false;
+        });
+    }
+    function Insert() {
+        var Id = $('#Id').html();
+        var BrandName = $('#BrandName').val();
+        var IsActive = $('#flexCheckDefault').val();
+        $.ajax({
+            url: "/Api/ItemBrand/InsertItemBrand",
+            type: "POST",
+            data: JSON.stringify({
+                "id": Id,
+                "BrandName": BrandName,
+                "IsActive": IsActive
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (msg) {
+                swal("Your Record Successfully Added!", "You clicked the button!", "success");
+                if (Id != "") {
+                    $('#ModalForInsert').find('input').val("");
+                    $('#flexCheckDefault').prop('checked', false);
+                    $("#Id").html('');
+                    getDetails();
+                }
+                else {
+                    $('#ModalForInsert').find('input').val("");
+                    $('#flexCheckDefault').prop('checked', false);
+                    $("#Id").html('');
+                    getDetails();
+                }
+            }
+        });
+    }
+    function getDetails() {
+        $.ajax({
+            url: "/api/ItemBrand/ReadAll",
+            type: "Get",
+            async: false,
+            success: function (data) {
+                if (data != "") {
+                    data = JSON.parse(data)
+                    $('#datatable').DataTable({
+                        destroy: "true",
+                        data: data,
+                        columns: [
+                            { data: 'Id' },
+                            { data: 'BrandName' },
+                            { data: 'IsActive' },
+                        ],
+                        "columnDefs": [{
+                            "targets": 3,
+                            "data": null,
+                            "defaultContent":
+                                '<button class="button is-primary  is-elevated btn-edit" data-toggle="modal" data-target="#ModalForInsert" onclick="ReadId(this)"><span class="icon is-small"><i class="fa-solid fa-pen-to-square"></i></span></button>' +
+                                '<a class="p-1"  style="text-align:center" onclick="getId(this)" data-toggle="modal" data-target="#DeleteModal"  role="button"><i style="text-align:center ; color:red" class="fa-solid fa-trash-can"></i></a>'
+                        }]
+                    });
+                }
+            }
+        });
+    }
+    function ReadId(elem) {
+        var Id = $(elem).closest('tr').find('td').eq(0).html()
+        $.ajax({
+            url: "/api/ItemBrand/ReadById?id=" + Id,
+            type: "Post",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = JSON.parse(data);
+                $("#Id").html(Id);
+                $("#BrandName").val(data[0]['BrandName']);
+                $('#flexCheckDefault').prop("checked", (data[0].IsActive == "True" ? true : false));
+                $('#flexCheckDefault').val(data[0].IsActive);
+            },
+        });
+
+    }
+    function getId(elem) {
+        var Id = $(elem).closest('tr').find('td').eq(0).html()
+        $("#IdDel").html(Id);
+    }
+    function Delete(elem) {
+        var Id = $('#IdDel').html()
+        $.ajax({
+            url: "/api/ItemBrand/Delete?Id=" + Id,
+            type: "POST",
+            success: function (msg) {
+                $('#DeleteModal').modal('hide')
+                swal("Your Record Successfully Deleted!", "You clicked the button!", "success");
+                getDetails();
+            }
+        });
+    };
+</script>
+
+<div class="heading">
+    <h2 class="heading-title m-0">Brand Item</h2>
+</div>
+<div class="content">
+    <div class="table-responsive p-3 data-table table-hover">
+        <table id="datatable" class="table table-striped table-bordered bulk_action" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Item Brand</th>
+                    <th>Is Active</th>
+                    <th>Edit/Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="basic-btn">
+            <button type="button" class="btn add-btn" data-toggle="modal" data-target="#ModalForInsert" onclick="getTypeData()"><i class="fa-solid fa-plus"></i></button>
+        </div>
+    </div>
+</div>
+<div id="ModalForInsert" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-black fw-500">Add Brand Item</h2>
+                <label id="Id"></label>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mt-3">
+                    <label for="">Brand Name</label>
+                    <input type="text" class="form-control error" id="BrandName" placeholder="Brand Name">
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Is Active
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" onclick="ClearData()" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" onclick="Insert()" class="btn btn-danger">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="DeleteModal" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header align-items-center">
+                <div class="">
+                    <h4 class="modal-title">Are you sure?</h4>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Do you really want to delete these records? This process cannot be undone.</p>
+            </div>
+            <label id="IdDel" class="text-center"></label>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" onclick="Delete(this)" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+

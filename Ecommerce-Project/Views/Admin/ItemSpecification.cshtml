@@ -1,0 +1,504 @@
+﻿@{
+    ViewData["Title"] = "ItemSpecification";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script>
+    $(document).ready(function () {
+        $('.js-example-basic-multiple').select2();
+        GetCategory();
+        $("#flexCheckDefault").val('False');
+        CheckStatus("flexCheckDefault");
+        CheckStatus("flexCheckDefaultItem");
+    });
+    function CheckStatus(e) {
+        $('#' + e).on('change', function (e) {
+            e.stopPropagation();
+            this.value = this.checked ? true : false;
+        });
+    }
+
+    function GetCategory() {
+        debugger;
+        $.ajax({
+            url: "/api/SubCategory/ReadAll",
+            type: 'Post',
+            data: JSON.stringify({
+                "Id": "26"
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = JSON.parse(data);
+                $('#Category').html('')
+                $("#Category").append('<option value="0">-Select Category-</option>')
+                for (var i = 0; i < data.length; i++) {
+                    var html = '<option value="' + data[i]['Id'] + '">' + data[i]['Description'] + '</option>';
+                    $('#Category').append(html);
+                }
+            },
+        })
+    }
+    function GetSubCategory() {
+        var Id = $("#Category").val();
+        debugger;
+        $.ajax({
+            url: "/api/ItemSetup/GetSubCategory",
+            type: 'Post',
+            data: JSON.stringify({
+                Id: Id
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data != "") {
+                    data = JSON.parse(data);
+                    $('#SubCategory').html('')
+                    $("#SubCategory").append('<option value="0">--Select SubCategory--</option>')
+                    for (var i = 0; i < data.length; i++) {
+                        var html = '<option value="' + data[i]['Id'] + '">' + data[i]['SubCategory_Name'] + '</option>';
+                        $('#SubCategory').append(html);
+                    }
+                }
+                else {
+                    $('#SubCategory').html('')
+                    $("#SubCategory").append('<option value="0">--No SubCategory--</option>')
+                }
+
+            },
+        })
+    }
+    function GetItemData() {
+        var Id = $("#SubCategory").val();
+        debugger;
+        $.ajax({
+            url: "/api/ItemSetup/ReadItem",
+            type: 'Post',
+            data: JSON.stringify({
+                Id: Id
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data != "") {
+                    data = JSON.parse(data);
+                    $('#Item').html('')
+                    $("#Item").append('<option value="0">--Select Item--</option>')
+                    for (var i = 0; i < data.length; i++) {
+                        var html = '<option value="' + data[i]['Id'] + '">' + data[i]['Title'] + '</option>';
+                        $('#Item').append(html);
+                    }
+                }
+                else {
+                    $('#Item').html('')
+                    $("#Item").append('<option value="0">--No Item--</option>')
+                }
+
+            },
+        })
+    }
+    function getDetails() {
+        var Id = $('#Item').val();
+        $.ajax({
+            url: "/api/ItemSpecification/GetItemSpecification?Id=" + Id,
+            type: "Post",
+            async: false,
+            success: function (data) {
+                if (data != "") {
+                    data = JSON.parse(data)
+                    $('#datatable').DataTable({
+                        destroy: "true",
+                        data: data,
+                        columns: [
+                            { data: 'Id' },
+                            { data: 'ItemId' },
+                            { data: 'ItemSpecification' },
+                            { data: 'IsActive' },
+                        ],
+                        "columnDefs": [{
+                            "targets": 4,
+                            "data": null,
+                            "defaultContent":
+                                '<button class="button is-primary  is-elevated btn-edit" data-toggle="modal" data-target="#InsertOptionValue" onclick="ReadValueId(this)"><span><i class="fa-solid fa-utensils"></i></span></button>' +
+                                '<button class="button is-primary  is-elevated btn-edit" data-toggle="modal" data-target="#ModalForInsert" onclick="ReadId(this)"><span class="icon is-small"><i class="fa-solid fa-pen-to-square"></i></span></button>' +
+                                '<a class="p-1"  style="text-align:center" onclick="getId(this)" data-toggle="modal" data-target="#DeleteModal"  role="button"><i style="text-align:center ; color:red" class="fa-solid fa-trash-can"></i></a>'
+                        }]
+                    });
+                }
+            },
+            error: function (data) {
+                $('#datatable').DataTable().destroy();
+            }
+        });
+    }
+    function getDetailsValue() {
+        var Id = $('#ItemSpecificationId').html();
+        $.ajax({
+            url: "/api/ItemSpecification/ReadByIdValue?Id=" + Id,
+            type: "Post",
+            async: false,
+            success: function (data) {
+                if (data != "") {
+                    data = JSON.parse(data)
+                    $('#datatablevalue').DataTable({
+                        destroy: "true",
+                        data: data,
+                        columns: [
+                            { data: 'Id' },
+                            { data: 'ItemField' },
+                            { data: 'ItemPrice' },
+                            { data: 'ItemQuantity' },
+                            { data: 'IsActive' },
+                        ],
+                        "columnDefs": [{
+                            "targets": 5,
+                            "data": null,
+                            "defaultContent":
+                                '<button class="button is-primary  is-elevated btn-edit" onclick="ReadIdField(this)"><span class="icon is-small"><i class="fa-solid fa-pen-to-square"></i></span></button>' +
+                                '<a class="p-1"  style="text-align:center" onclick="getId(this)" data-toggle="modal" data-target="#DeleteFieldModal"  role="button"><i style="text-align:center ; color:red" class="fa-solid fa-trash-can"></i></a>'
+                        }]
+                    });
+                }
+            },
+            error: function (data) {
+                $('#datatable').DataTable().destroy();
+            }
+        });
+    }
+    function Insert() {
+        var Id = $('#Id').html();
+        var ItemId = $('#Item').val();
+        var ItemSpecification = $('#ItemSpecification').val();
+        var IsActive = $('#flexCheckDefaultItem').val();
+        $.ajax({
+            url: "/Api/ItemSpecification/InsertItemSpecification",
+            type: "POST",
+            data: JSON.stringify({
+                "id": Id, "ItemId": ItemId, "ItemSpecification": ItemSpecification, "IsActive": IsActive
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (msg) {
+                swal("Your Record Successfully Added!", "You clicked the button!", "success");
+                if (Id != "") {
+                    $('#ModalForInsert').find('input').val("");
+                    $('#flexCheckDefaultItem').prop('checked', false);
+                    $("#Id").html('');
+                    getDetails();
+                }
+                else {
+                    $('#ModalForInsert').find('input').val("");
+                    $('#flexCheckDefaultItem').prop('checked', false);
+                    $("#Id").html('');
+                    getDetails();
+                }
+            }
+        });
+    }
+    function InsertValue() {
+        var Id = $('#Id').html();
+        var ItemSpecificationId = $('#ItemSpecificationId').html();
+        var ItemField = $('#ItemField').val();
+        var ItemPrice = $('#ItemPrice').val();
+        var ItemQuantity = $('#ItemQuantity').val();
+        var IsActive = $('#flexCheckDefault').val();
+        $.ajax({
+            url: "/Api/ItemSpecification/InsertItemField",
+            type: "POST",
+            data: JSON.stringify({
+                "id": Id, "ItemSpecificationId": ItemSpecificationId, "ItemField": ItemField, "ItemPrice": ItemPrice, "ItemQuantity": ItemQuantity, "IsActive": IsActive
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (msg) {
+                if (Id != "") {
+                    $('#InsertOptionValue').find('input').val("");
+                    $('#flexCheckDefault').prop('checked', false);
+                    $("#Id").html('');
+                    getDetailsValue();
+                    toastr.success('Have fun storming the castle!', 'Miracle Max Says');
+                }
+                else {
+                    $('#InsertOptionValue').find('input').val("");
+                    $('#flexCheckDefault').prop('checked', false);
+                    $("#Id").html('');
+                    getDetailsValue();
+                    toastr.success('Have fun storming the castle!', 'Miracle Max Says');
+                }
+            }
+        });
+    }
+    function ReadValueId(elem) {
+        var Id = $(elem).closest('tr').find('td').eq(0).html();
+        var Name = $(elem).closest('tr').find('td').eq(2).html();
+        $('#ItemSpecificationId').html(Id);
+        $('#ItemSpecificationName').html(Name);
+        $.ajax({
+            url: "/api/ItemSpecification/ReadByIdValue?Id=" + Id,
+            type: "Post",
+            async: false,
+            success: function (data) {
+                if (data != "") {
+                    data = JSON.parse(data)
+                    $('#datatablevalue').DataTable({
+                        destroy: "true",
+                        data: data,
+                        columns: [
+                            { data: 'Id' },
+                            { data: 'ItemField' },
+                            { data: 'ItemPrice' },
+                            { data: 'ItemQuantity' },
+                            { data: 'IsActive' },
+                        ],
+                        "columnDefs": [{
+                            "targets": 5,
+                            "data": null,
+                            "defaultContent":
+                                '<button class="button is-primary  is-elevated btn-edit" onclick="ReadIdField(this)"><span class="icon is-small"><i class="fa-solid fa-pen-to-square"></i></span></button>' +
+                                '<a class="p-1"  style="text-align:center" onclick="getId(this)" data-toggle="modal" data-target="#DeleteFieldModal"  role="button"><i style="text-align:center ; color:red" class="fa-solid fa-trash-can"></i></a>'
+                        }]
+                    });
+                }
+                else {
+                    $('#datatable').DataTable().destroy();
+                }
+            },
+            error: function (data) {
+                $('#datatable').DataTable().destroy();
+            }
+        });
+    }
+    
+    function getTypeData() {
+        var TypeId = $('#Category').val();
+        if (TypeId != 0) {
+            $('#ModalForInsert').attr('data-target', '#ModalForInsert');
+        }
+        else {
+            $('#ModalForInsert').attr('data-target', 'asad');
+            swal("Please Select The dropdown!", "You clicked the button!", "warning");
+        }
+    }
+    function ReadId(elem) {
+        var Id = $(elem).closest('tr').find('td').eq(0).html()
+        $.ajax({
+            url: "/api/ItemSpecification/ReadById?id=" + Id,
+            type: "Post",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = JSON.parse(data);
+                $("#Id").html(Id);
+                $("#ItemSpecification").val(data[0]['ItemSpecification']);
+                $('#flexCheckDefaultItem').prop("checked", (data[0].IsActive == "True" ? true : false));
+                $('#flexCheckDefaultItem').val(data[0].IsActive);
+            },
+        });
+
+    }
+    function ReadIdField(elem) {
+        var Id = $(elem).closest('tr').find('td').eq(0).html()
+        $.ajax({
+            url: "/api/ItemSpecification/ReadIdField?id=" + Id,
+            type: "Post",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = JSON.parse(data);
+                $("#Id").html(Id);
+                $("#ItemField").val(data[0]['ItemField']);
+                $("#ItemPrice").val(data[0]['ItemPrice']);
+                $("#ItemQuantity").val(data[0]['ItemQuantity']);
+                $('#flexCheckDefault').prop("checked", (data[0].IsActive == "True" ? true : false));
+                $('#flexCheckDefault').val(data[0].IsActive);
+            },
+        });
+
+    }
+    function getId(elem) {
+        var Id = $(elem).closest('tr').find('td').eq(0).html()
+        $("#IdDel").html(Id);
+    }
+    function ClearData() {
+        $('#ModalForInsert').find('input').val("");
+        $('#ModalForInsert').find('textarea').val("");
+        $('#flexCheckDefault').prop('checked', false);
+        $("#Id").html('');
+    }
+    function Delete(elem) {
+        var Id = $('#IdDel').html()
+        $.ajax({
+            url: "/api/ItemSpecification/Delete?Id=" + Id,
+            type: "POST",
+            success: function (msg) {
+                $('#DeleteModal').modal('hide')
+                swal("Your Record Successfully Deleted!", "You clicked the button!", "success");
+                getDetails();
+            }
+        });
+    }
+    function DeleteField(elem) {
+        var Id = $('#IdDel').html()
+        $.ajax({
+            url: "/api/ItemSpecification/DeleteField?Id=" + Id,
+            type: "POST",
+            success: function (msg) {
+                $('#DeleteModal').modal('hide')
+                swal("Your Record Successfully Deleted!", "You clicked the button!", "success");
+                ReadValueId();
+            }
+        });
+    }
+    
+    
+</script>
+
+
+<div class="heading">
+    <h2 class="heading-title m-0">Specification Setup</h2>
+    <select class="form-select js-example-basic-multiple" id="Category" onchange="GetSubCategory()">
+        <option value="" id=""></option>
+    </select>
+    <select class="form-select js-example-basic-multiple" id="SubCategory" onchange="GetItemData()">
+        <option value="" id=""></option>
+    </select>
+    <select class="form-select js-example-basic-multiple" id="Item" onchange="getDetails()">
+        <option value="" id=""></option>
+    </select>
+</div>
+<div class="content">
+    <div class="table-responsive p-3 data-table table-hover">
+        <table id="datatable" class="table table-striped table-bordered bulk_action" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Item Id</th>
+                    <th>Item Specification</th>
+                    <th>Is Active</th>
+                    <th>Edit/Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="basic-btn">
+            <button type="button" class="btn add-btn" data-toggle="modal" data-target="#ModalForInsert" onclick="getTypeData()"><i class="fa-solid fa-plus"></i></button>
+        </div>
+    </div>
+</div>
+<div id="InsertOptionValue" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-black fw-500">Item Specification Value</h2>
+            </div>
+            <div class="form-group mt-3 px-3">
+                <label for="" class="d-none">Id: <span id="ItemSpecificationId"></span></label>
+                <label for="" class="d-none">Id: <span id="Id"></span></label>
+                <label for="" class="d-none">Name: <span id="ItemSpecificationName"></span></label>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mt-3">
+                    <label for="">Item Field</label>
+                    <input type="text" class="form-control error" id="ItemField" placeholder="Item Field">
+                </div>
+                <div class="form-group mt-3">
+                    <label for="">Item Price</label>
+                    <input type="text" class="form-control error" id="ItemPrice" placeholder="Item Price">
+                </div>
+                <div class="form-group mt-3">
+                    <label for="">Item Quantity</label>
+                    <input type="text" class="form-control error" id="ItemQuantity" placeholder="Item Quantity">
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Is Active
+                    </label>
+                </div>
+                <div class="content">
+                    <div class="table-responsive p-3 data-table table-hover">
+                        <table id="datatablevalue" class="table table-striped table-bordered bulk_action" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Item Field</th>
+                                    <th>Item Price</th>
+                                    <th>Item Quantity</th>
+                                    <th>Is Active</th>
+                                    <th>Edit/Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" onclick="ClearData()" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" onclick="InsertValue()" class="btn btn-danger">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ModalForInsert" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-black fw-500">Item Specification</h2>
+                <label id="Id"></label>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mt-3">
+                    <label for="">Item Specification Name</label>
+                    <input type="text" class="form-control error" id="ItemSpecification" placeholder="VariationName">
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultItem">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Is Active
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" onclick="ClearData()" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" onclick="Insert()" class="btn btn-danger">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="DeleteModal" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header align-items-center">
+                <div class="">
+                    <h4 class="modal-title">Are you sure?</h4>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Do you really want to delete these records? This process cannot be undone.</p>
+            </div>
+            <label id="IdDel" class="text-center"></label>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" onclick="Delete(this)" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="DeleteFieldModal" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header align-items-center">
+                <div class="">
+                    <h4 class="modal-title">Are you sure?</h4>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Do you really want to delete these records? This process cannot be undone.</p>
+            </div>
+            <label id="IdDel" class="text-center"></label>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" onclick="DeleteField(this)" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

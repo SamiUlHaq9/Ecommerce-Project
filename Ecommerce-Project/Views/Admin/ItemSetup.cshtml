@@ -1,0 +1,326 @@
+﻿@{
+    ViewData["Title"] = "ItemSetup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<script>
+    $(document).ready(function () {
+        $('.js-example-basic-multiple').select2();
+        ReadId();
+        tinymce.init({ selector: '#textArea' });
+        GetCategory();
+        GetBrand();
+        GetVariationName();
+        $("#flexCheckDefault").val('False');
+        CheckStatus("flexCheckDefault");
+    });
+    function CheckStatus(e) {
+        $('#' + e).on('change', function (e) {
+            e.stopPropagation();
+            this.value = this.checked ? true : false;
+        });
+    }
+    function GetCategory() {
+        $.ajax({
+            url: "/api/CustomSetup/ReadAll",
+            type: 'Post',
+            data: JSON.stringify({
+                "Id": "26"
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = JSON.parse(data);
+                $('#Category').html('')
+                $("#Category").append('<option value="0">--Select Category--</option>')
+                for (var i = 0; i < data.length; i++) {
+                    var html = '<option value="' + data[i]['Id'] + '">' + data[i]['Description'] + '</option>';
+                    $('#Category').append(html);
+                }
+                // GetSubCategory();
+            },
+        })
+    }
+    function GetSubCategory() {
+        var Id = $("#Category").val();
+        $.ajax({
+            url: "/api/ItemSetup/GetSubCategory",
+            type: 'Post',
+            data: JSON.stringify({
+                Id: Id
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = JSON.parse(data);
+                $('#SubCategory').html('')
+                $("#SubCategory").append('<option value="0">--Select SubCategory--</option>')
+                for (var i = 0; i < data.length; i++) {
+                    var html = '<option value="' + data[i]['Id'] + '">' + data[i]['SubCategory_Name'] + '</option>';
+                    $('#SubCategory').append(html);
+                }
+            },
+        })
+    }
+    function GetBrand() {
+        $.ajax({
+            url: "/api/ItemBrand/ReadAll",
+            type: 'Get',
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = JSON.parse(data);
+                $('#Brand').html('')
+                $("#Brand").append('<option value="0">--Select Brand--</option>')
+                for (var i = 0; i < data.length; i++) {
+                    var html = '<option value="' + data[i]['Id'] + '">' + data[i]['BrandName'] + '</option>';
+                    $('#Brand').append(html);
+                }
+            },
+        })
+    }
+    function Insert() {
+        var Id = GetURLParameter('id');
+        var file = $('#file').prop('files')[0];
+        var Title = $('#Title').val();
+        var Description = $("#textArea").val();
+        var Status = $('#Status').val();
+        var B = $('#Brand').val();
+        var Brand = B.toString();
+        var PQ = $('#Quantity').val();
+        var Quantity = PQ.toString();
+        //var W = $('#Weight').val();
+        //var Weight = W.toString();
+        var MOQ = $('#MaxOrderQuantity').val();
+        var MaxOrderQuantity = MOQ.toString();
+        //var P = $('#Price').val();
+        //var Price = P.toString();
+        //var CAP = $('#CompareAtPrice').val();
+        //var CompareAtPrice = CAP.toString();
+        var C = $('#Category').val();
+        var Category = C.toString();
+        var SC = $('#SubCategory').val();
+        var SubCategory = SC.toString();
+        //var SKU = $('#SKU').val();
+        //var Barcode = $('#Barcode').val();
+        var IsActive = $('#flexCheckDefault').val();
+        $.ajax({
+            url: "/Api/ItemSetup/InsertItemSetup",
+            type: "POST",
+            data: JSON.stringify({
+                "id": Id,
+                "File": File,
+                "Title": Title,
+                "Description": Description,
+                "Brand": Brand,
+                "Status": Status,
+                "Quantity": Quantity,
+                /*"Weight": Weight,*/
+                "MaxOrderQuantity": MaxOrderQuantity,
+                //"Price": Price,
+                //"CompareAtPrice": CompareAtPrice,
+                "Category": Category,
+                "SubCategory": SubCategory,
+                //"SKU": SKU,
+                //"Barcode": Barcode,
+                "IsActive": IsActive
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (msg) {
+                if (msg == 1) {
+                    if (Id != null) {
+                        window.location.href = '/Admin/ItemSetupDetail';
+                    }
+                    else {
+                        swal({
+                            title: "Success!",
+                            text: "Data Has Been Successfully Inserted.",
+                            icon: "success",
+                            button: "OK",
+                        });
+                        $('form').find('input').val("");
+                        $('form').find('textarea').val("");
+                        $('#flexCheckDefault').prop('checked', false);
+                    }
+                }
+                else if (msg == 2) {
+                    swal({
+                        title: "Error!",
+                        text: "Internal Server Error Status : 500",
+                        icon: "error",
+                        button: "OK",
+                    });
+                }
+                else {
+                    swal({
+                        title: "Error!",
+                        text: "Unexpected Error",
+                        icon: "error",
+                        button: "OK",
+                    });
+                }
+            }
+        });
+    }
+    function ReadId() {
+        var Id = GetURLParameter('id');
+        if (Id == null) {
+
+        }
+        else {
+            $.ajax({
+                url: "/api/ItemSetup/ReadById?id=" + Id,
+                type: "Post",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    data = JSON.parse(data);
+                    $("#Id").val();
+                    $("#Title").val(data[0]['Title']);
+                    $("#Description").val(data[0]['Description']);
+                    $("#ItemType").val(data[0]['ProductType']);
+                    $("#Status").val(data[0]['Status']).change();
+                    $("#Brand").val(data[0]['Brand']).change();
+                    $("#Quantity").val(data[0]['Quantity']);
+                    $("#Weight").val(data[0]['Weight']);
+                    $("#MaxOrderQuantity").val(data[0]['MaxOrderQuantity']);
+                    $("#Price").val(data[0]['Price']);
+                    $("#CompareAtPrice").val(data[0]['CompareAtPrice']);
+                    $("#Category").val(data[0]['Category']).change();
+                    $.ajax({
+                        url: "/api/ItemSetup/GetSubCategory",
+                        type: 'Post',
+                        data: JSON.stringify({
+                            Id: data[0]['Category']
+                        }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data1) {
+                            data1 = JSON.parse(data1);
+                            $('#SubCategory').html('')
+                            $("#SubCategory").append('<option value="0">--Select Category--</option>')
+                            for (var i = 0; i < data1.length; i++) {
+                                var html = '<option value="' + data1[i]['Id'] + '">' + data1[i]['SubCategory_Name'] + '</option>';
+                                $('#SubCategory').append(html);
+                            }
+                            $("#SubCategory").val(data[0]['SubCategory']).change();
+                        },
+                    })
+                    $("#SKU").val(data[0]['SKU']);
+                    $("#Barcode").val(data[0]['Barcode']);
+                    $('#flexCheckDefault').prop("checked", (data[0].IsActive == "True" ? true : false));
+                    $('#flexCheckDefault').val(data[0].IsActive);
+                },
+            });
+        }
+    }
+
+</script>
+
+<div class="heading">
+    <h2 class="heading-title m-0">Add Product</h2>
+</div>
+<div class="px-3 mt-4">
+    <form id="myform">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="form-box">
+                    <div class="form-group  mt-3">
+                        <label for="inputCity">Title</label>
+                        <input type="text" class="form-control error" id="Title" placeholder="Title">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="inputPassword4">Description</label>
+                        <textarea id="textArea" name="textArea"></textarea>
+                    </div>
+                </div>
+                <div class="form-box">
+                    <div class="form-group  mt-3">
+                        <label for="inputCity">Media</label>
+                        <input type="file" class="form-control error media-input" id="file" placeholder="">
+                    </div>
+                </div>
+                <div class="form-box">
+                    <div class="form-group mt-3">
+                        <label for="inputZip">Price</label>
+                        <input type="number" class="form-control error" id="Price" placeholder="Price">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="inputCity">Compare At Price</label>
+                        <input type="number" class="form-control error" id="CompareAtPrice" placeholder="Compare At Price">
+                    </div>
+                </div>
+                <div class="form-box">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group mt-3">
+                                <label for="inputZip">SKU (Stock Keeping Unit)</label>
+                                <input type="text" class="form-control error" id="SKU" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group mt-3">
+                                <label for="inputZip">Barcode (ISBN, UPC, GTIN, etc.)</label>
+                                <input type="text" class="form-control error" id="Barcode" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCity">Quantity</label>
+                        <input type="number" class="form-control error" id="Quantity" placeholder="Quantity">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="inputZip">Max Order Quantity</label>
+                        <input type="number" class="form-control error" id="MaxOrderQuantity" placeholder="Quantity">
+                    </div>
+                </div>
+                @*<div class="form-box">
+                    <div class="form-group mt-3">
+                        <label for="inputCity">Weight </label>
+                        <input type="number" class="form-control error" id="Weight" placeholder="Weight">
+                    </div>
+                </div>*@
+            </div>
+            <div class="col-lg-4">
+                <div class="form-box">
+                    <div class="form-group mt-3">
+                        <label for="inputState">Product status</label>
+                        <select id="Status" class="form-control">
+                            <option value="0">Active</option>
+                            <option value="1">Draft</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-box">
+                    @*<div class="form-group mt-3">
+                        <label for="inputState">Product Type</label>
+                        <select id="ItemType" class="form-control js-example-basic-multiple">
+                            <option value=""></option>
+                        </select>
+                    </div>*@
+                    <div class="form-group mt-3">
+                        <label for="inputState">Brand</label>
+                        <select id="Brand" class="form-control js-example-basic-multiple">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="inputState">Category</label>
+                        <select id="Category" class="form-control js-example-basic-multiple" onchange="GetSubCategory()">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="inputState">SubCategory</label>
+                        <select id="SubCategory" class="form-control js-example-basic-multiple">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group mt-3 px-5">
+            <div class="text-right">
+                <button type="button" class="btn comman-btn" onclick="Insert()">Save</button>
+            </div>
+        </div>
+    </form>
+</div>

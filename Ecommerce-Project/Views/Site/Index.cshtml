@@ -1,0 +1,852 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_LayoutSite.cshtml";
+}
+
+
+<script>
+    $(document).ready(function () {
+        GetProducts();
+    });
+
+    function GetProducts() {
+        $.ajax({
+            url: "/api/ItemSetup/ReadAll",
+            type: 'Get',
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var data = JSON.parse(data);
+                for (var i = 0; i < data.length; i++) {
+                    var product = data[i];
+                    var newProduct = $('<div>').addClass('col-md-3 col-sm-6').append(
+                        $('<div>').addClass('product-grid').append(
+                            $('<div>').addClass('product-image').append(
+                                $('<a>').attr('href', '#').append(
+                                    $('<img>').addClass('pic-1').attr('src', 'Site/img/2-card-1.jpg')
+                                ),
+                                $('<ul>').addClass('social').append(
+                                    $('<li>').append(
+                                        $('<a>').attr('href', '').attr('data-tip', 'Quick View').append(
+                                            $('<ion-icon>').addClass('mt-1').attr('name', 'search-outline')
+                                        )
+                                    ),
+                                    $('<li>').append(
+                                        $('<a>').attr('href', '').attr('data-tip', 'Add to Wishlist').append(
+                                            $('<ion-icon>').addClass('mt-1').attr('name', 'bag-handle')
+                                        )
+                                    ),
+                                    $('<li>').append(
+                                        $('<a>').attr('href', '').attr('data-tip', 'Add to Cart').append(
+                                            $('<ion-icon>').addClass('mt-1').attr('name', 'cart')
+                                        )
+                                    )
+                                ),
+                                $('<span>').addClass('product-new-label').text('Sale'),
+                                $('<span>').addClass('product-discount-label').text('20%')
+                            ),
+                             $('<ul>').addClass('rating p-0').append(
+                                 $('<li>').append(
+                                     $('<ion-icon>').addClass('star-smal').attr('name', 'star')
+                                 ),
+                                 $('<li>').append(
+                                     $('<ion-icon>').addClass('star-smal').attr('name', 'star')
+                                 ),
+                                 $('<li>').append(
+                                     $('<ion-icon>').addClass('star-smal').attr('name', 'star')
+                                 ),
+                                 $('<li>').append(
+                                     $('<ion-icon>').addClass('star-smal').attr('name', 'star')
+                                 ),
+                                 $('<li>').addClass('disable').append(
+                                     $('<ion-icon>').addClass('star-smal').attr('name', 'star')
+                                 )
+                             ),
+                            $('<div>').addClass('product-content').append(
+                                $('<h3>').addClass('title').append(
+                                    $('<a>').attr('href', '#').text(product.Title)
+                                ),
+                                $('<div>').addClass('price').attr('id', 'gas').html('Rs ' + product.price + '<span>Rs ' + product.discount + '</span>'),
+                                $('<a>').addClass('add-to-cart').attr('href', '').text('+ Add To Cart')
+                            )
+                        ),
+                    );
+
+                    $('#product-container').append(newProduct);
+                    console.log(product.Title)
+                }
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+            }
+        })
+    }
+
+
+    
+
+</script>
+
+
+<main>
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active bg-primary" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2 " class="bg-primary"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3 " class="bg-primary"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class=" home-banner-1">
+                    <div class="home-banner-text">
+                        <h3 class=" mb-4">52% Discount </h3>
+                        <a href="#" class="text-uppercase btn-selid">Our Products</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="home-banner-2">
+                    <div class="home-banner-text">
+                        <h3 class=" mb-4">30% Discount</h3>
+                        <a href="#" class="text-uppercase ">Our Products</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="home-banner-3">
+                    <div class="home-banner-text">
+                        <h3 class=" mb-4">80% Of Discount</h3>
+                        <a href="#" class="text-uppercase ">Our Products</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <ion-icon name="caret-back" aria-hidden="true" class="salide-icon"></ion-icon>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <ion-icon name="caret-forward" aria-hidden="true" class="salide-icon"></ion-icon>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+
+    <div class=" container mt-5 ">
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-3 mt-2">
+                <a href="#" class="d-flex justify-content-between main-icons">
+                    <img src="~/Site/img/grocery.png" alt="">
+                    <p class="m-0 align-self-center">Grocery</p>
+                </a>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3 mt-2">
+                <a href="#" class="d-flex justify-content-between main-icons">
+                    <img src="~/Site/img/fashion.png" alt="">
+                    <p class="m-0 align-self-center">Fashion</p>
+                </a>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3 mt-2">
+                <a href="#" class="d-flex justify-content-between main-icons">
+                    <img src="~/Site/img/farnichar.png" alt="">
+                    <p class="m-0 align-self-center">Farnichar</p>
+                </a>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3 mt-2">
+                <a href="#" class="d-flex justify-content-between main-icons">
+                    <img src="~/Site/img/beauty.png" alt="">
+                    <p class="m-0 align-self-center">Beauty</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class=" container mt-5 border-bottom mb-5"><h3 class="text-center mb-4">Monthly Offers</h3></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <a href="#" class=" offers">
+                    <div class="img-offers-1">
+                        <div><h4>20%</h4></div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6">
+                <a href="#" class=" offers">
+                    <div class="img-offers-2">
+                        <div><h4>9%</h4></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class=" container mt-5 border-bottom"><h3 class="text-center mb-4">Top Categories</h3></div>
+    <div class=" container mt-4">
+        <div class="row">
+            <div class=" col-12 col-md-6 col-lg-3 mt-2">
+                <div class="card">
+                    <div class="card-body ">
+                        <a href="#" class=" text-decoration-none ">
+                            <h5 class="card-title text-center up-card ">Accessories</h5>
+                        </a>
+                    </div>
+                    <img src="~/Site/img/2-card-1.jpg" class="card-img-bottom" alt="...">
+                </div>
+            </div>
+
+
+            <div class=" col-12 col-md-6 col-lg-3 mt-2">
+                <div class="card">
+                    <div class="card-body ">
+                        <a href="#" class=" text-decoration-none ">
+                            <h5 class="card-title text-center up-card ">Freezer Goods</h5>
+                        </a>
+                    </div>
+                    <img src="~/Site/img/2-card-2.webp" class="card-img-bottom " alt="...">
+                </div>
+            </div>
+
+
+            <div class=" col-12 col-md-6 col-lg-3 mt-2">
+                <div class="card">
+                    <div class="card-body ">
+                        <a href="#" class=" text-decoration-none ">
+                            <h5 class="card-title text-center up-card ">Grocery & Staples</h5>
+                        </a>
+                    </div>
+                    <img src="~/Site/img/2-card-3.webp" class="card-img-bottom" alt="...">
+                </div>
+            </div>
+
+            <div class=" col-12 col-md-6 col-lg-3 mt-2">
+                <div class="card">
+                    <div class="card-body ">
+                        <a href="#" class=" text-decoration-none ">
+                            <h5 class="card-title text-center up-card ">Household Supplies</h5>
+                        </a>
+                    </div>
+                    <img src="~/Site/img/2-card-4.webp" class="card-img-bottom" alt="...">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class=" container mt-5 border-bottom"><h3 class="text-center mb-4">Featured Products</h3></div>
+        <div class="container mt-4 mb-2">
+            <div id="product-container" class="row">
+                @*<div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="~/Site/img/card-1.webp">
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">20%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title">
+                                <a href="#">
+                                    Garnier Color Naturals
+                                </a>
+                            </h3>
+                            <div class="price" id="gas">
+                                Rs 500
+                                <span>Rs 800</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>*@
+            </div>
+        </div>
+
+
+        <div class="container mb-2">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="~/Site/img/card-6.jpg">
+
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">20%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title">
+                                <a href="#">
+                                    Garnier Color Naturals
+                                </a>
+                            </h3>
+                            <div class="price">
+                                Rs 500
+                                <span>Rs 800</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="~/Site/img/card-7.jpeg">
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">30%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title">
+                                <a href="#">
+                                    Garnier Color Naturals
+                                </a>
+                            </h3>
+                            <div class="price">
+                                Rs 500
+                                <span>Rs 800</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="~/Site/img/card-8.jpg">
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">50%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title"><a href="#">Dettol Antiseptic Liquid</a></h3>
+                            <div class="price">
+                                Rs 50
+                                <span>Rs 100</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="~/Site/img/card-9.jpg">
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">20%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title">
+                                <a href="#">
+                                    National Crushed Pickle Mixed in Oil
+                                </a>
+                            </h3>
+                            <div class="price">
+                                Rs 270
+                                <span>Rs 450</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container mb-2">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="~/Site/img/card-10.jpg">
+
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">20%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title">
+                                <a href="#">
+                                    Garnier Color Naturals
+                                </a>
+                            </h3>
+                            <div class="price">
+                                Rs 500
+                                <span>Rs 800</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="~/Site/img/card-11.jpg">
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">30%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title">
+                                <a href="#">
+                                    Garnier Color Naturals
+                                </a>
+                            </h3>
+                            <div class="price">
+                                Rs 500
+                                <span>Rs 800</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="~/Site/img/card-12.jpg">
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">50%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title"><a href="#">Dettol Antiseptic Liquid</a></h3>
+                            <div class="price">
+                                Rs 50
+                                <span>Rs 100</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="~/Site/img/card-13.jpg">
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">20%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title">
+                                <a href="#">
+                                    National Crushed Pickle Mixed in Oil
+                                </a>
+                            </h3>
+                            <div class="price">
+                                Rs 270
+                                <span>Rs 450</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="container mb-2">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="~/Site/img/card-14.jpg">
+
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">20%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title">
+                                <a href="#">
+                                    Garnier Color Naturals
+                                </a>
+                            </h3>
+                            <div class="price">
+                                Rs 500
+                                <span>Rs 800</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="~/Site/img/card-15.jpg">
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">30%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title">
+                                <a href="#">
+                                    Garnier Color Naturals
+                                </a>
+                            </h3>
+                            <div class="price">
+                                Rs 500
+                                <span>Rs 800</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="~/Site/img/card-3.jpg">
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">50%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title"><a href="#">Dettol Antiseptic Liquid</a></h3>
+                            <div class="price">
+                                Rs 50
+                                <span>Rs 100</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="~/Site/img/card-5.jpg">
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">20%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title">
+                                <a href="#">
+                                    National Crushed Pickle Mixed in Oil
+                                </a>
+                            </h3>
+                            <div class="price">
+                                Rs 270
+                                <span>Rs 450</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container mb-5">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="img/card-1.webp">
+
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">20%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title">
+                                <a href="#">
+                                    Garnier Color Naturals
+                                </a>
+                            </h3>
+                            <div class="price">
+                                Rs 500
+                                <span>Rs 800</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="~/Site/img/card-2.jpg">
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">30%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title">
+                                <a href="#">
+                                    Garnier Color Naturals
+                                </a>
+                            </h3>
+                            <div class="price">
+                                Rs 500
+                                <span>Rs 800</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="~/Site/img/card-3.jpg">
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">50%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title"><a href="#">Dettol Antiseptic Liquid</a></h3>
+                            <div class="price">
+                                Rs 50
+                                <span>Rs 100</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="#">
+                                <img class="pic-1" src="~/Site/img/card-5.jpg">
+                            </a>
+                            <ul class="social">
+                                <li><a href="" data-tip="Quick View"><ion-icon name="search-outline" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Wishlist"><ion-icon name="bag-handle" class="mt-1"></ion-icon></a></li>
+                                <li><a href="" data-tip="Add to Cart"><ion-icon name="cart" class="mt-1"></ion-icon></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">20%</span>
+                        </div>
+                        <ul class="rating p-0">
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li><ion-icon name="star" class="star-smal"></ion-icon></li>
+                            <li class="disable"><ion-icon name="star" class="star-smal"></ion-icon></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title">
+                                <a href="#">
+                                    National Crushed Pickle Mixed in Oil
+                                </a>
+                            </h3>
+                            <div class="price">
+                                Rs 270
+                                <span>Rs 450</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</main>
