@@ -1,4 +1,5 @@
-﻿using Ecommerce_Project.Models;
+﻿using Ecommerce_Project.Common;
+using Ecommerce_Project.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,39 +15,6 @@ namespace IMS.Controllers
     [ApiController]
     public class SubCategoryController : ControllerBase
     {
-        public static string DataTableToJSON(DataTable table)
-        {
-            var JSONString = new StringBuilder();
-            if (table.Rows.Count > 0)
-            {
-                JSONString.Append("[");
-                for (int i = 0; i < table.Rows.Count; i++)
-                {
-                    JSONString.Append("{");
-                    for (int j = 0; j < table.Columns.Count; j++)
-                    {
-                        if (j < table.Columns.Count - 1)
-                        {
-                            JSONString.Append("\"" + table.Columns[j].ColumnName.ToString() + "\":" + "\"" + table.Rows[i][j].ToString() + "\",");
-                        }
-                        else if (j == table.Columns.Count - 1)
-                        {
-                            JSONString.Append("\"" + table.Columns[j].ColumnName.ToString() + "\":" + "\"" + table.Rows[i][j].ToString() + "\"");
-                        }
-                    }
-                    if (i == table.Rows.Count - 1)
-                    {
-                        JSONString.Append("}");
-                    }
-                    else
-                    {
-                        JSONString.Append("},");
-                    }
-                }
-                JSONString.Append("]");
-            }
-            return JSONString.ToString();
-        }
         [HttpPost]
         [Route("InsertSubCategory")]
         public async Task<object> InsertSubCategory([FromBody] SubCategory data)
@@ -61,15 +29,15 @@ namespace IMS.Controllers
             return ("Insert Done");
         }
 
-        [HttpPost]
-        [Route("ReadAll")]
-        public async Task<Object> ReadAll(SubCategory data)
-        {
-            SubCategory prov = new SubCategory();
-            prov.Id = data.Id;
-            var obj = DataTableToJSON(prov.ReadAll());
-            return obj;
-        }
+        //[HttpGet]
+        //[Route("GetCategory")]
+        //public async Task<Object> GetCategory(string Id)
+        //{
+        //    SubCategory prov = new SubCategory();
+        //    prov.Id = Id;
+        //    var obj = ExtensionHelper.DataTableToJSON(prov.GetSubCategory());
+        //    return obj;
+        //}
 
         [HttpPost]
         [Route("ReadById")]
@@ -77,7 +45,7 @@ namespace IMS.Controllers
         {
             SubCategory prov = new SubCategory();
             prov.Id = Id;
-            var obj = DataTableToJSON(prov.ReadById());
+            var obj = ExtensionHelper.DataTableToJSON(prov.ReadById());
             return obj;
         }
 
@@ -87,7 +55,7 @@ namespace IMS.Controllers
         {
             SubCategory prov = new SubCategory();
             prov.Id = Id;
-            var obj = DataTableToJSON(prov.ReadForCategory());
+            var obj = ExtensionHelper.DataTableToJSON(prov.ReadForCategory());
             return obj;
         }
 

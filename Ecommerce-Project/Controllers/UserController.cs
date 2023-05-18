@@ -1,4 +1,5 @@
-﻿using Ecommerce_Project.Models;
+﻿using Ecommerce_Project.Common;
+using Ecommerce_Project.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,6 @@ namespace Ecommerce_Project.Controllers
             var currentUser = GetCurrentUser();
 
             return RedirectToAction("Index", "Home", currentUser);
-
         }
 
         [HttpGet("user")]
@@ -61,40 +61,6 @@ namespace Ecommerce_Project.Controllers
             return null;
         }
 
-        [NonAction]
-        public static string DataTableToJSON(DataTable table)
-        {
-            var JSONString = new StringBuilder();
-            if (table.Rows.Count > 0)
-            {
-                JSONString.Append("[");
-                for (int i = 0; i < table.Rows.Count; i++)
-                {
-                    JSONString.Append("{");
-                    for (int j = 0; j < table.Columns.Count; j++)
-                    {
-                        if (j < table.Columns.Count - 1)
-                        {
-                            JSONString.Append("\"" + table.Columns[j].ColumnName.ToString() + "\":" + "\"" + table.Rows[i][j].ToString() + "\",");
-                        }
-                        else if (j == table.Columns.Count - 1)
-                        {
-                            JSONString.Append("\"" + table.Columns[j].ColumnName.ToString() + "\":" + "\"" + table.Rows[i][j].ToString() + "\"");
-                        }
-                    }
-                    if (i == table.Rows.Count - 1)
-                    {
-                        JSONString.Append("}");
-                    }
-                    else
-                    {
-                        JSONString.Append("},");
-                    }
-                }
-                JSONString.Append("]");
-            }
-            return JSONString.ToString();
-        }
 
         [HttpPost]
         [Route("InsertUser")]
@@ -116,7 +82,7 @@ namespace Ecommerce_Project.Controllers
         public string ReadAll()
         {
             User ra = new User();
-            var a = DataTableToJSON(ra.ReadAll());
+            var a = ExtensionHelper.DataTableToJSON(ra.ReadAll());
             return a;
         }
 
@@ -126,7 +92,7 @@ namespace Ecommerce_Project.Controllers
         {
             User rbi = new User();
             rbi.Id = Id;
-            var b = DataTableToJSON(rbi.ReadById());
+            var b = ExtensionHelper.DataTableToJSON(rbi.ReadById());
             return b;
         }
 
