@@ -37,7 +37,7 @@ namespace Ecommerce_Project.Models
                 throw;
             }
         }
-        public DataTable ReadAll()
+        public DataTable GetSubCategory()
         {
             ds.Clear();
             SqlParameter[] param = new SqlParameter[2];

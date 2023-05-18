@@ -59,12 +59,12 @@ namespace Ecommerce_Project.Controllers
             var ra = ExtensionHelper.DataTableToJSON(cs.ReadAll());
             return ra;
         }
-        [HttpPost]
+        [HttpGet]
         [Route("GetSubCategory")]
-        public string GetSubCategory(ItemSetup data)
+        public string GetSubCategory(string Id)
          {
             ItemSetup cs = new ItemSetup();
-            cs.Id = data.Id;
+            cs.Id = Id;
             var a = ExtensionHelper.DataTableToJSON(cs.GetSubCategory());
             return a;
         }

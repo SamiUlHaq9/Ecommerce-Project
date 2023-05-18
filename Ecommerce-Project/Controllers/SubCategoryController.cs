@@ -29,15 +29,15 @@ namespace IMS.Controllers
             return ("Insert Done");
         }
 
-        [HttpPost]
-        [Route("ReadAll")]
-        public async Task<Object> ReadAll(SubCategory data)
-        {
-            SubCategory prov = new SubCategory();
-            prov.Id = data.Id;
-            var obj = ExtensionHelper.DataTableToJSON(prov.ReadAll());
-            return obj;
-        }
+        //[HttpGet]
+        //[Route("GetCategory")]
+        //public async Task<Object> GetCategory(string Id)
+        //{
+        //    SubCategory prov = new SubCategory();
+        //    prov.Id = Id;
+        //    var obj = ExtensionHelper.DataTableToJSON(prov.GetSubCategory());
+        //    return obj;
+        //}
 
         [HttpPost]
         [Route("ReadById")]

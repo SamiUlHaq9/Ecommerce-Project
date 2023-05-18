@@ -28,12 +28,12 @@ namespace Ecommerce_Project.Controllers
             return "Insert Done";
         }
 
-        [HttpPost]
-        [Route("ReadAll")]
-        public async Task<object> ReadAll(CustomSetup data)
+        [HttpGet]
+        [Route("GetCategory")]
+        public async Task<object> GetCategory(string Id)
         {
             CustomSetup cs = new CustomSetup();
-            cs.Id = data.Id;
+            cs.Id = Id;
             var ra = ExtensionHelper.DataTableToJSON(cs.ReadAll());
             return ra;
         }
