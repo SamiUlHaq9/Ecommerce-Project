@@ -22,14 +22,13 @@
             this.value = this.checked ? true : false;
         });
     }
+    //Getting Category Using GetCategory API Which is in CustomSetup
     function GetCategory() {
         $.ajax({
-            url: "/api/CustomSetup/ReadAll",
-            type: 'Post',
-            data: JSON.stringify({
-                "Id": "26"
-            }),
-            contentType: "application/json; charset=utf-8",
+            url: "/api/CustomSetup/GetCategory",
+            type: 'Get',
+            data: { Id: "26" },
+            contentType: "json",
             success: function (data) {
                 data = JSON.parse(data);
                 $('#Category').html('')
@@ -46,11 +45,8 @@
         var Id = $("#Category").val();
         $.ajax({
             url: "/api/ItemSetup/GetSubCategory",
-            type: 'Post',
-            data: JSON.stringify({
-                Id: Id
-            }),
-            contentType: "application/json; charset=utf-8",
+            type: 'Get',
+            data: { Id: Id },
             success: function (data) {
                 data = JSON.parse(data);
                 $('#SubCategory').html('')

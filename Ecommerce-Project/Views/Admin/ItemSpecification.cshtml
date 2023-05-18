@@ -18,16 +18,13 @@
             this.value = this.checked ? true : false;
         });
     }
-
+    //Getting Category Using GetCategory API Which is in CustomSetup
     function GetCategory() {
-        debugger;
         $.ajax({
-            url: "/api/SubCategory/ReadAll",
-            type: 'Post',
-            data: JSON.stringify({
-                "Id": "26"
-            }),
-            contentType: "application/json; charset=utf-8",
+            url: "/api/CustomSetup/GetCategory",
+            type: 'Get',
+            data: { Id: "26" }
+            contentType: "json",
             success: function (data) {
                 data = JSON.parse(data);
                 $('#Category').html('')
@@ -95,7 +92,7 @@
             },
         })
     }
-    function getDetails() {
+    function GetDetails() {
         var Id = $('#Item').val();
         $.ajax({
             url: "/api/ItemSpecification/GetItemSpecification?Id=" + Id,
@@ -129,7 +126,7 @@
             }
         });
     }
-    function getDetailsValue() {
+    function GetDetailsValue() {
         var Id = $('#ItemSpecificationId').html();
         $.ajax({
             url: "/api/ItemSpecification/ReadByIdValue?Id=" + Id,
@@ -356,7 +353,7 @@
     <select class="form-select js-example-basic-multiple" id="SubCategory" onchange="GetItemData()">
         <option value="" id=""></option>
     </select>
-    <select class="form-select js-example-basic-multiple" id="Item" onchange="getDetails()">
+    <select class="form-select js-example-basic-multiple" id="Item" onchange="GetDetails()">
         <option value="" id=""></option>
     </select>
 </div>
